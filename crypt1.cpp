@@ -55,7 +55,6 @@ const int maxn = 100;
 
 char input[maxn];
 int hashtbl[maxn] = { 0 };
-int prime_hashtbl[maxn] = {0};
 
 bool isPrime (int i)
 {
@@ -93,11 +92,11 @@ void solve()
 	//abc,de should be in hash table
 	FOR(i, 100, 999)
 	{
-		if (!in_hash_table(prime_hashtbl,i)) continue;
+		if (!in_hash_table(hashtbl,i)) continue;
 		FOR(j, 10, 99)
 		{
 			if (!ok(i, j)) continue;
-			if (!in_hash_table(prime_hashtbl,j) || !in_hash_table(hashtbl,i*j)) continue;
+			if (!in_hash_table(hashtbl,j) || !in_hash_table(hashtbl,i*j)) continue;
 
 			count++;
 		}
@@ -120,7 +119,6 @@ int main()
 	{
 		cin >> j;
 		hashtbl[j] += 1;
-		if (isPrime(j)) prime_hashtbl[j] += 1;
 	}
 	
 	solve();

@@ -6,25 +6,25 @@ LANG: C++11
 */
 
 
-#include <cstdio> 
-#include <iostream> 
-#include <cmath> 
-#include <string> 
-#include <list> 
-#include <vector> 
-#include <algorithm> 
-#include <functional> 
-#include <utility> 
-#include <set> 
-#include <unordered_map> 
-#include <map> 
-#include <complex> 
-#include <queue> 
-#include <stack> 
-#include <cstdlib> 
-#include <ctime> 
-#include <cstring> 
-#include <string.h> 
+#include <cstdio>
+#include <iostream>
+#include <cmath>
+#include <string>
+#include <list>
+#include <vector>
+#include <algorithm>
+#include <functional>
+#include <utility>
+#include <set>
+#include <unordered_map>
+#include <map>
+#include <complex>
+#include <queue>
+#include <stack>
+#include <cstdlib>
+#include <ctime>
+#include <cstring>
+#include <string.h>
 
 using namespace std;
 
@@ -54,6 +54,7 @@ template<class T> void ckmax(T &a, const T &b) { if (b>a) a = b; }
 
 int N = 0, M = 0, max_num = 0, a = 0, b = 0;
 vector<ipair> result;
+map<int,int> hash_pow;
 
 
 bool isSquareSum(int n)
@@ -65,14 +66,10 @@ bool isSquareSum(int n)
 	}
 
 	return false;*/
+	
+	
 
-	for (int i = 0; i < sqrt(n + 0.5) && i <= M; i++)
-	{
-		int j = sqrt(n - i*i);
-		if (j <= M && sqr(i) + sqr(j) == n && i <= j) return true;
-	}
-
-	return false;
+	return hash_pow.count(n) > 0;
 }
 
 
@@ -93,13 +90,19 @@ void dfs(int a, int b, int depth)
 
 int main()
 {
-	/*freopen("ariprog.in", "r", stdin);
-	freopen("ariprog.out", "w", stdout);*/
+	freopen("ariprog.in", "r", stdin);
+	freopen("ariprog.out", "w", stdout);
 
 	//N (3 <= N <= 25), the length of progressions for which to search
 	//M (1 <= M <= 250), an upper bound to limit the search to the bisquares with 0 <= p,q <= M
 	cin >> N >> M;
 	max_num = M*M;
+
+	REP(i, M+1)
+	REP(j, M+1)
+	{
+		hash_pow[sqr(i)+sqr(j)] =1;
+	}
 
 	REP(i, 2 * max_num + 1)
 		FOR(j, 1,2 * max_num - i + 1) dfs(i, j, 0);

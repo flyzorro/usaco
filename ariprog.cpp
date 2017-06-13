@@ -54,39 +54,28 @@ template<class T> void ckmax(T &a, const T &b) { if (b>a) a = b; }
 
 #define MAX_NUM 200000
 
-int N = 0, M = 0, max_num = 0, a = 0, b = 0;
+int N = 0, M = 0, max_num = 0, a = 0, b = 0, k = 0;
 vector<ipair> result;
-int hash_pow[MAX_NUM] = { 0 };
+int vis[MAX_NUM] = {0};
+int hashset_num[MAX_NUM] = { 0 };
+int num_set[MAX_NUM] = { 0 };
 
-
-bool isSquareSum(int n)
-{
-	/*REP(i, M + 1)
-	REP(j, M + 1)
-	{
-	if (sqr(i) + sqr(j) == n) return true;
-	}
-
-	return false;*/
-
-
-
-	return hash_pow[n] > 0;
-}
 
 
 void dfs(int a, int b, int depth)
 {
-	if (depth >= N)
+	if (depth >= N )
 	{
-		result.push_back(MP(b, a));
+		if (find(ALL(result),MP(b,a)) == result.end()) result.push_back(MP(b, a));
 		return;
 	}
 
-
-	if (isSquareSum(a + b*depth))
+	//avoid duplicate visit
+	if ( hashset_num[a+b*depth])
 	{
+		
 		dfs(a, b, depth + 1);
+		
 	}
 }
 
@@ -103,12 +92,27 @@ int main()
 	REP(i, M + 1)
 		REP(j, M + 1)
 	{
-		hash_pow[sqr(i) + sqr(j)] = 1;
+		int sum = sqr(i) + sqr(j);
+		if (!hashset_num[sum])
+		{
+			hashset_num[sum] = 1;
+			num_set[k++] = sqr(i) + sqr(j);
+		}
+		
 	}
 
-	REP(i, 2 * max_num + 1)
-		FOR(j, 1, 2 * max_num - i + 1) dfs(i, j, 0);
-
+	//a must be combination of sqr(i) +sqr(j)
+	int aa = 0;
+	REP(i, k+1)
+	{
+		aa = num_set[i];
+		FOR(j, 1, 2 * max_num - aa + 1)
+		{
+			dfs(aa, j, 0);			
+		}
+			
+	}
+		
 	sort(ALL(result));
 	for (auto p : result)
 	{

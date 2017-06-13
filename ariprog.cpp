@@ -52,9 +52,11 @@ template<class T> int countbit(const T &n) { return (n == 0) ? 0 : (1 + countbit
 template<class T> void ckmin(T &a, const T &b) { if (b<a) a = b; }
 template<class T> void ckmax(T &a, const T &b) { if (b>a) a = b; }
 
+#define MAX_NUM 200000
+
 int N = 0, M = 0, max_num = 0, a = 0, b = 0;
 vector<ipair> result;
-map<int,int> hash_pow;
+int hash_pow[MAX_NUM] = { 0 };
 
 
 bool isSquareSum(int n)
@@ -66,10 +68,10 @@ bool isSquareSum(int n)
 	}
 
 	return false;*/
-	
-	
 
-	return hash_pow.count(n) > 0;
+
+
+	return hash_pow[n] > 0;
 }
 
 
@@ -98,14 +100,14 @@ int main()
 	cin >> N >> M;
 	max_num = M*M;
 
-	REP(i, M+1)
-	REP(j, M+1)
+	REP(i, M + 1)
+		REP(j, M + 1)
 	{
-		hash_pow[sqr(i)+sqr(j)] =1;
+		hash_pow[sqr(i) + sqr(j)] = 1;
 	}
 
 	REP(i, 2 * max_num + 1)
-		FOR(j, 1,2 * max_num - i + 1) dfs(i, j, 0);
+		FOR(j, 1, 2 * max_num - i + 1) dfs(i, j, 0);
 
 	sort(ALL(result));
 	for (auto p : result)

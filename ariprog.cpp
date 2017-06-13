@@ -108,7 +108,7 @@ int main()
 		aa = num_set[i];
 		FOR(j, 1, 2 * max_num - aa + 1)
 		{
-			dfs(aa, j, 0);			
+			if (aa + (N-1)*j <= 2*sqr(M)) dfs(aa, j, 0);			
 		}
 			
 	}

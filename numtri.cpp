@@ -2,7 +2,7 @@
 /*
 ID: flyzorr1
 PROG: numtri
-LANG: C++11                
+LANG: C++
 */
 
 
@@ -16,7 +16,6 @@ LANG: C++11
 #include <functional> 
 #include <utility> 
 #include <set> 
-#include <unordered_map> 
 #include <map> 
 #include <complex> 
 #include <queue> 
@@ -52,40 +51,51 @@ template<class T> int countbit(const T &n) { return (n == 0) ? 0 : (1 + countbit
 template<class T> void ckmin(T &a, const T &b) { if (b<a) a = b; }
 template<class T> void ckmax(T &a, const T &b) { if (b>a) a = b; }
 
-#define MAX_NUM = 2000
+#define MAX_NUM 1000
 
 int R = 0, max_path = 0;
-int data[MAX_NUM][MAX_NUM] = {{0,0}}, vis[MAX_NUM][MAX_NUM][200] = {{0,0,0}};
-int result[MAX_NUM] = {0};
+int input[MAX_NUM][MAX_NUM] = { { 0,0 } };
+int result[MAX_NUM] = { 0 };
 
-void dfs(int depth)
+void dfs(int pos, int depth)
 {
 	if (depth == R)
 	{
 		int sum = 0;
-		REP (i, R+1) sum += result[i];
+		REP(i, R ) sum += result[i];
 		ckmax(max_path, sum);
 		return;
 	}
+
+	result[depth] = input[depth][pos];
+	//printf("ck depth = %d, pos = %d, num=%d\n", depth, pos, input[depth][pos]);
+	dfs(pos, depth + 1);
+	dfs(pos + 1, depth + 1);
+
 }
 
 void solve()
 {
-	dfs(0);
+	dfs(0, 0);
 }
 
 int main()
 {
 	freopen("numtri.in", "r", stdin);
 	freopen("numtri.out", "w", stdout);
-	
+
 	//R (1 <= R <= 1000), the number of rows.
-	cin>>R;
-	REP(i, R+1) 
-	REP(j, i+1) scanf("%d", &data[i][j]);
-	
+	cin >> R;
+	REP(i, R )
+		REP(j, i + 1) 
+	{ 
+		int d; 
+		cin >> d; 
+		input[i][j] = d;
+	}
+
 	solve();
-	
+
 	printf("%d\n", max_path);
 	return 0;
 }
